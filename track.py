@@ -11,6 +11,8 @@ negative_Predictive_Accuracies = []
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 import matplotlib.pyplot as plt
 fig,ax = plt.subplots(subplot_kw={'projection':'3d'})
+score = 0
+index = 0
 while count < 325:
     output = open('meta'+str(count)+'.pkl', 'rb')
     data = pickle.load(output)
@@ -23,6 +25,9 @@ while count < 325:
     specificities.append(data['Specificity'])
     positive_Predictive_Accuracies.append(data['Positive_Predictive_Accuracy '])
     negative_Predictive_Accuracies.append(data['Negative_Predictive_Accuracy:'])
+    if data['score'] > score:
+        score = data['score']
+        index = count
     if count%18 == 0:
         # ax.plot(ms,ns,accuracies)
         # ax.plot(ms,ns,sensitivities)
@@ -46,4 +51,6 @@ ax.set_zlabel('calssification score')
 from matplotlib.ticker import MaxNLocator
 ax.xaxis.set_major_locator(MaxNLocator(integer=True))
 ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+print ('score: ', score)
+print ('index: ',index)
 plt.show()
